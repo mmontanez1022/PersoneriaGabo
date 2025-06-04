@@ -3,12 +3,16 @@ from .forms import UserRegisterForm, CandidateForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from .models import Candidates
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
     return render(request,'users/home.html')
 
-
+@login_required(login_url='logIn')
 def signUp(request):
+    if not request.user.is_superuser:
+        logout(request)
+        return redirect('main')
     if request.method == 'GET':
         return render(request,'users/signUp.html',{
             'form': UserRegisterForm()
@@ -20,7 +24,6 @@ def signUp(request):
                 'form': form
             })
         user = form.save()
-        login(request, user)
         return redirect('main')
 
 def logIn(request):
@@ -45,19 +48,26 @@ def logOut(request):
     logout(request)
     return redirect('home')
 
+@login_required(login_url='logIn')
 def main(request):
-    candidates = Candidates.objects.all()
+    ombudsmans = Candidates.objects.filter(position='Personería')
+    comptrollers = Candidates.objects.filter(position='Contraloría')
     if request.method == 'GET':
         return render(request,'users/main.html',{
-            'candidates': candidates
+            'ombudsmans' : ombudsmans,
+            'comptrollers' : comptrollers,
         })
     else:
         return render(request,'users/main.html',{
-            'candidates': candidates
+            'ombudsmans' : ombudsmans,
+            'comptrollers' : comptrollers,
         })
 
-
+@login_required(login_url='logIn')
 def create_candidate(request):
+    if not request.user.is_superuser:
+        logout(request)
+        return redirect('main')
     users = User.objects.filter(is_active=True)
     candidates = Candidates.objects.all()
     if request.method == 'GET':

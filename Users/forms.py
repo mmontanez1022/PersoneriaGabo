@@ -27,8 +27,10 @@ class CandidateForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={'class': 'form-control'}),
         label='Número de Identificación'
     )
-    grade = forms.CharField(
-        max_length=10,
+    grade = forms.ChoiceField(
+        choices=[
+            ('', 'Seleccione un grado')
+        ] + [(f'11-{str(i)}',f'11-{str(i)}') for i in range(1, 6)],
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         label='Grado'
     )
@@ -36,13 +38,13 @@ class CandidateForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={'class': 'form-control'}),
         label='Edad'
     )
-    position = forms.CharField(
-        max_length=100,
+    position = forms.ChoiceField(
+        choices=[('', 'Seleccione el cargo'),('Personería', 'Personería'),('Contraloría', 'Contraloría')],
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         label='Posición'
     )
-    gender = forms.CharField(
-        max_length=10,
+    gender = forms.ChoiceField(
+        choices=[('', 'Seleccione el género'), ('Masculino', 'Masculino'), ('Femenino', 'Femenino'), ('Otro', 'Otro')],
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         label='Género'
     )
