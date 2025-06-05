@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, CandidateForm
+from .forms import UserRegisterForm, CandidateForm, VoteForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from .models import Candidates
@@ -36,10 +36,14 @@ def logIn(request):
             return render(request,'users/logIn.html',{
                 'error' : 'La contraseña o el correo electrónico son incorrectos.'
             })
-        user = authenticate(username=user.username, password=request.POST['password'],is_active=True)
+        user = authenticate(username=user.username, password=request.POST['password'])
         if user is None:
             return render(request,'users/logIn.html',{
                 'error' : 'La contraseña o el correo electrónico son incorrectos.'
+            })
+        if not user.is_active:
+            return render(request,'users/logIn.html',{
+                'error' : 'El usuario ya votó.'
             })
         login(request, user)
         return redirect('main')
@@ -86,3 +90,16 @@ def create_candidate(request):
             })
         form.save()
         return redirect('main')
+    
+@login_required(login_url='logIn')
+def vote(request):
+    ombudsmans = Candidates.objects.filter(position='Personería')
+    comptrollers = Candidates.objects.filter(position='Contraloría')
+    form = VoteForm(request.POST)
+    if not form.is_valid():
+        return render(request,'Users/main.html',{
+            'ombudsmans' : ombudsmans,
+            'comptrollers' : comptrollers,
+        })
+    form.save(request.user)
+    return redirect('main')

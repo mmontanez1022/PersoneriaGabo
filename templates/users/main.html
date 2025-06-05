@@ -51,7 +51,12 @@
         <div class="card-body">
           <h5 class="card-title">{{ ombudsman.user.username }}</h5>
           <p class="card-text">{{ ombudsman.description }}</p>
-          <button class="btn btn-primary">Vota!</button> 
+          <select name="ombudsman" form="vote-form" id="candidate" hidden>
+            <option value="{{ombudsman.id}}"></option>
+          </select>
+          {% if not user.is_superuser %}
+          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
+          {% endif %} 
         </div>
       </div>
       {% endfor %}
@@ -63,12 +68,21 @@
         <div class="card-body">
           <h5 class="card-title">{{ comptroller.user.username }}</h5>
           <p class="card-text">{{ comptroller.description }}</p>
-          <button class="btn btn-primary">Vota!</button> 
+          <select name="candidate" form="vote-form" id="candidate" hidden>
+            <option value="{{comptroller.id}}"></option>
+          </select>
+          {% if not user.is_superuser %}
+          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
+          {% endif %} 
         </div>
       </div>
       {% endfor %}
     </article>
-    
+    <div class="d-none">
+      <form action="{% url 'votes' %}" id="vote-form" method="POST">
+        {% csrf_token %}
+      </form>
+    </div>
   </main>
 
 

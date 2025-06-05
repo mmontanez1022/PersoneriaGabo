@@ -61,3 +61,19 @@ class CandidateForm(forms.ModelForm):
         model = Candidates
         fields = ['user', 'identification_number', 'grade', 'age', 'position', 'gender', 'description', 'photo']
         help_texts = {'' for _ in fields}
+
+class VoteForm(forms.Form):
+    candidate = forms.ModelChoiceField(
+        queryset=Candidates.objects.all()
+    )
+    
+    def save(self,user):
+        if not user and isinstance(user, User):
+            raise ValidationError('El usuario no existe o ya votó.')# Deactivate the user after voting
+        user.is_active = False
+        user.save()
+        candidate = self.cleaned_data.get('candidate')
+        if candidate:
+            candidate.votes += 1
+            candidate.save()
+        

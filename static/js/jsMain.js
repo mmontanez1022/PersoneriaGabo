@@ -8,8 +8,8 @@ personeriaButton.addEventListener('click', function() {
     personeriaButton.classList.add('d-none');
     personeriaArticle.classList.remove('d-none');
     personeriaArticle.classList.add('container', 'd-flex', 'flex-wrap', 'justify-content-around', 'mt-5');
-    contraloriaArticle.classList.add('d-none');
     contraloriaArticle.classList.remove('container', 'd-flex', 'flex-wrap', 'justify-content-around', 'mt-5');
+    contraloriaArticle.classList.add('d-none');
 });
 contraloriaButton.addEventListener('click', function() {
     personeriaButton.classList.remove('d-none');
