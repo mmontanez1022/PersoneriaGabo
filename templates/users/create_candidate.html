@@ -21,7 +21,7 @@
             </li>
             {% if user.is_superuser %}
             <li class="nav-item">
-              <a class="nav-link " href="#">Resultados</a>
+              <a class="nav-link " href="{% url 'results' %}">Resultados</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-primary" href="{% url 'signUp' %}">Crear usuario</a>

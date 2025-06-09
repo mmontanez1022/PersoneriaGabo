@@ -67,11 +67,12 @@ class VoteForm(forms.Form):
         queryset=Candidates.objects.all()
     )
     
-    def save(self,user):
+    def save(self,user, active=False):
         if not user and isinstance(user, User):
             raise ValidationError('El usuario no existe o ya votó.')# Deactivate the user after voting
-        user.is_active = False
-        user.save()
+        if active:  
+            user.is_active = False
+            user.save()
         candidate = self.cleaned_data.get('candidate')
         if candidate:
             candidate.votes += 1

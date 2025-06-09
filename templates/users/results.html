@@ -1,4 +1,4 @@
-{% load static %}
+</html>{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +26,7 @@
             </li>
             {% if user.is_superuser %}
             <li class="nav-item">
-              <a class="nav-link " href="{% url 'results' %}">Resultados</a>
+              <a class="nav-link " href="{% url 'main' %}">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-primary" href="{% url 'signUp' %}">Crear usuario</a>
@@ -44,47 +44,23 @@
     </nav>
   </header>
   <main>
-    <article id="ombudsman" class="container d-flex flex-wrap justify-content-around mt-5">
-      {% for ombudsman in ombudsmans %}
-      <div class="card" style="width: 18rem;">
-        <img src="../../media/{{ombudsman.photo}}" class="card-img-top img-thumbnail" alt="{{ombudsman.user.username}}">
-        <div class="card-body">
-          <h5 class="card-title">{{ ombudsman.user.username }}</h5>
-          <p class="card-text">{{ ombudsman.description }}</p>
-          <select name="ombudsman" form="vote-form" id="candidate" hidden>
-            <option value="{{ombudsman.id}}"></option>
-          </select>
-          {% if not user.is_superuser %}
-          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
-          {% endif %} 
-        </div>
-      </div>
-      {% endfor %}
+    <article>
+        <h2>Personeria</h2>
+        {%for ombudsman in ombudsmans%}
+            <p>{{ombudsman.user.username}}</p>
+            <p>{{ombudsman.votes}}</p>
+        {% endfor %}
     </article>
-    <article id="comptroller" class="d-none">
-      {% for comptroller in comptrollers %}
-      <div class="card" style="width: 18rem;">
-        <img src="../../media/{{comptroller.photo}}" class="card-img-top img-thumbnail" alt="{{comptroller.user.username}}">
-        <div class="card-body">
-          <h5 class="card-title">{{ comptroller.user.username }}</h5>
-          <p class="card-text">{{ comptroller.description }}</p>
-          <select name="candidate" form="vote-form" id="candidate" hidden>
-            <option value="{{comptroller.id}}"></option>
-          </select>
-          {% if not user.is_superuser %}
-          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
-          {% endif %} 
-        </div>
-      </div>
-      {% endfor %}
+    <article>
+        <h2>Contraloria</h2>
+        {% for comptroller in comptrollers %}
+            <p>{{comptroller.user.username}}</p>
+            <p>{{comptroller.votes}}</p>
+        {% endfor %}
     </article>
-    <div class="d-none">
-      <form action="{% url 'votes' %}" id="vote-form" method="POST">
-        {% csrf_token %}
-      </form>
-    </div>
+    
+    
   </main>
-
 
 
 

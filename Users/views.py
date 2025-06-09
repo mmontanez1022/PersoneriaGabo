@@ -4,6 +4,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from .models import Candidates
 from django.contrib.auth.decorators import login_required
+import json
+from django.utils import timezone
+import os
 # Create your views here.
 def home(request):
     return render(request,'users/home.html')
@@ -101,5 +104,53 @@ def vote(request):
             'ombudsmans' : ombudsmans,
             'comptrollers' : comptrollers,
         })
+    # Buscar si el usuario ya votó por un candidato
+    votes_file = os.path.join(os.path.dirname(__file__), 'votes.json')
+    try:
+        with open(votes_file, 'r', encoding='utf-8') as f:
+            votes = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        votes = []
+    
+    for vote in votes:
+        if vote['user'] == request.user.username:
+            return render(request, 'Users/main.html', {
+                'ombudsmans': ombudsmans,
+                'comptrollers': comptrollers,
+                'error': 'Ya has votado.'
+            })
+    # Guardar información del voto en un archivo JSON
+    voted_candidates = []
+    for field in form.cleaned_data:
+        candidate = form.cleaned_data[field]
+        if hasattr(candidate, 'position'):
+            voted_candidates.append({
+                'candidate_id': candidate.id,
+                'candidate_name': str(candidate),
+                'position': candidate.position
+            })
+    vote_data = {
+        'user': request.user.username,
+        'voted_candidates': voted_candidates.user.username,
+        'timestamp': timezone.now()
+    }
+    
+    try:
+        with open(votes_file, 'r', encoding='utf-8') as f:
+            votes = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        votes = []
+    votes.append(vote_data)
+    with open(votes_file, 'w', encoding='utf-8') as f:
+        json.dump(votes, f, ensure_ascii=False, indent=2)
     form.save(request.user)
     return redirect('main')
+
+@login_required(login_url='logIn')
+def results(request):
+    ombudsmans = Candidates.objects.filter(position='Personería')
+    comptrollers = Candidates.objects.filter(position='Contraloría') 
+    return render(request,'Users/results.html',{
+            'ombudsmans' : ombudsmans,
+            'comptrollers' : comptrollers,
+        })
