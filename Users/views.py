@@ -99,6 +99,10 @@ def vote(request):
     ombudsmans = Candidates.objects.filter(position='Personería')
     comptrollers = Candidates.objects.filter(position='Contraloría')
     form = VoteForm(request.POST)
+    try:
+        candidate = Candidates.objects.get(id=request.POST.get('candidate'))
+    except Candidates.DoesNotExist:
+        candidate = None
     if not form.is_valid():
         return render(request,'Users/main.html',{
             'ombudsmans' : ombudsmans,
@@ -111,28 +115,20 @@ def vote(request):
             votes = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         votes = []
-    
+    # Verificar si el usuario ya ha votado
     for vote in votes:
         if vote['user'] == request.user.username:
-            return render(request, 'Users/main.html', {
-                'ombudsmans': ombudsmans,
-                'comptrollers': comptrollers,
-                'error': 'Ya has votado.'
-            })
+            if vote['candidate'] == candidate.position:
+                return render(request,'Users/main.html',{
+                     'ombudsmans' : ombudsmans,
+                    'comptrollers' : comptrollers,
+                    'error' : f'Ya ha votado por {candidate.position}'
+                })
     # Guardar información del voto en un archivo JSON
-    voted_candidates = []
-    for field in form.cleaned_data:
-        candidate = form.cleaned_data[field]
-        if hasattr(candidate, 'position'):
-            voted_candidates.append({
-                'candidate_id': candidate.id,
-                'candidate_name': str(candidate),
-                'position': candidate.position
-            })
     vote_data = {
         'user': request.user.username,
-        'voted_candidates': voted_candidates.user.username,
-        'timestamp': timezone.now()
+        'candidate': candidate.position if candidate else None,
+        'timestamp': timezone.now().isoformat(),
     }
     
     try:

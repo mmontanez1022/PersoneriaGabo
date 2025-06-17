@@ -45,6 +45,9 @@
   </header>
   <main>
     <article id="ombudsman" class="container d-flex flex-wrap justify-content-around mt-5">
+      <p>
+        {{error}}
+      </p>
       {% for ombudsman in ombudsmans %}
       <div class="card" style="width: 18rem;">
         <img src="../../media/{{ombudsman.photo}}" class="card-img-top img-thumbnail" alt="{{ombudsman.user.username}}">
@@ -62,6 +65,9 @@
       {% endfor %}
     </article>
     <article id="comptroller" class="d-none">
+      <p>
+        {{error}}
+      </p>
       {% for comptroller in comptrollers %}
       <div class="card" style="width: 18rem;">
         <img src="../../media/{{comptroller.photo}}" class="card-img-top img-thumbnail" alt="{{comptroller.user.username}}">
