@@ -8,8 +8,7 @@ import json
 from django.utils import timezone
 import os
 # Create your views here.
-def home(request):
-    return render(request,'users/home.html')
+
 
 @login_required(login_url='logIn')
 def signUp(request):
