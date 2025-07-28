@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.utils import timezone
 import os
+from django.contrib import messages
 # Create your views here.
-def home(request):
-    return render(request,'users/home.html')
+
 
 @login_required(login_url='logIn')
 def signUp(request):
@@ -36,18 +36,15 @@ def logIn(request):
         try:
             user = User.objects.get(email=request.POST['email'])
         except User.DoesNotExist:
-            return render(request,'users/logIn.html',{
-                'error' : 'La contraseña o el correo electrónico son incorrectos.'
-            })
+            messages.error(request, 'La contraseña o el correo electrónico son incorrectos.')
+            return render(request,'users/logIn.html')
         user = authenticate(username=user.username, password=request.POST['password'])
         if user is None:
-            return render(request,'users/logIn.html',{
-                'error' : 'La contraseña o el correo electrónico son incorrectos.'
-            })
+            messages.error(request, 'La contraseña o el correo electrónico son incorrectos.')
+            return render(request,'users/logIn.html')
         if not user.is_active:
-            return render(request,'users/logIn.html',{
-                'error' : 'El usuario ya votó.'
-            })
+            messages.error(request, 'El usuario ya votó.')
+            return render(request,'users/logIn.html')
         login(request, user)
         return redirect('main')
 
@@ -61,8 +58,7 @@ def main(request):
     comptrollers = Candidates.objects.filter(position='Contraloría')
     if request.method == 'GET':
         return render(request,'users/main.html',{
-            'ombudsmans' : ombudsmans,
-            'comptrollers' : comptrollers,
+            'candidates': Candidates.objects.all(),
         })
     else:
         return render(request,'users/main.html',{

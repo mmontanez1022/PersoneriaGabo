@@ -1,99 +1,57 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static '/users/stylesMain.css' %}">
-    <title>Vota!</title>
+    <title>Candidatos - Personería GABO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light nav-color bg-success">
-      <div class="container-fluid mx-4">
-        <a class="navbar-brand" href="{% url 'home' %}">PersoneriaGABO</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <button class="nav-link d-none" id="personeria">Personeria</button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link" id='contraloria'>Contraloria</button>
-            </li>
-            {% if user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link " href="{% url 'results' %}">Resultados</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-primary" href="{% url 'signUp' %}">Crear usuario</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-warning" href="{% url 'create_candidate' %}">Crear candidato</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link text-danger" href="{% url 'logOut' %}">Cerrar sesión</a>
-            </li>
-          </ul>
+<body class="bg-light">
+
+    <nav class="navbar navbar-light bg-white shadow-sm mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="{% static 'img/logo.webp' %}" alt="Logo" width="40" class="me-2">
+                <span class="fw-bold fs-5 text-dark">I.E. GABO</span>
+            </div>
+            <div>
+                <a href="{% url 'logOut' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
-  <main>
-    <article id="ombudsman" class="container d-flex flex-wrap justify-content-around mt-5">
-      {% for ombudsman in ombudsmans %}
-      <div class="card" style="width: 18rem;">
-        <img src="../../media/{{ombudsman.photo}}" class="card-img-top img-thumbnail" alt="{{ombudsman.user.username}}">
-        <div class="card-body">
-          <h5 class="card-title">{{ ombudsman.user.username }}</h5>
-          <p class="card-text">{{ ombudsman.description }}</p>
-          <select name="ombudsman" form="vote-form" id="candidate" hidden>
-            <option value="{{ombudsman.id}}"></option>
-          </select>
-          {% if not user.is_superuser %}
-          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
-          {% endif %} 
+
+    <main class="container py-4">
+        <h1 class="text-center fw-bold mb-4">Candidatos a Personería</h1>
+
+        <div class="row justify-content-center">
+            {% for candidate in candidates %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5>
+                        <p class="card-text text-muted">{{ candidate.description }}</p>
+                        <form action="{% url 'vote' %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
+                            <button type="submit" class="btn btn-warning w-100">Votar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No hay candidatos registrados aún.</p>
+            </div>
+            {% endfor %}
         </div>
-      </div>
-      {% endfor %}
-    </article>
-    <article id="comptroller" class="d-none">
-      {% for comptroller in comptrollers %}
-      <div class="card" style="width: 18rem;">
-        <img src="../../media/{{comptroller.photo}}" class="card-img-top img-thumbnail" alt="{{comptroller.user.username}}">
-        <div class="card-body">
-          <h5 class="card-title">{{ comptroller.user.username }}</h5>
-          <p class="card-text">{{ comptroller.description }}</p>
-          <select name="candidate" form="vote-form" id="candidate" hidden>
-            <option value="{{comptroller.id}}"></option>
-          </select>
-          {% if not user.is_superuser %}
-          <input type="submit" class="btn btn-primary" form="vote-form" value="Vota!"> 
-          {% endif %} 
-        </div>
-      </div>
-      {% endfor %}
-    </article>
-    <div class="d-none">
-      <form action="{% url 'votes' %}" id="vote-form" method="POST">
-        {% csrf_token %}
-      </form>
-    </div>
-  </main>
+    </main>
 
+    <footer class="text-center text-muted py-3">
+        &copy; {{ year }} Institución Educativa GABO
+    </footer>
 
-
-
-
-
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-  <script src="{% static '/js/jsMain.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
