@@ -1,13 +1,7 @@
 [
   {
-    "user": "angelica_corra",
-    "voted_candidates": [
-      {
-        "candidate_id": 3,
-        "candidate_name": "Candidates object (3)",
-        "position": "Contraloría"
-      }
-    ],
-    "timestamp": "2025-06-09T15:56:44.456367+00:00"
+    "user": "Tomate",
+    "candidate": "Contraloría",
+    "timestamp": "2025-06-13T02:01:38.453462+00:00"
   }
 ]
