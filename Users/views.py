@@ -50,7 +50,7 @@ def logIn(request):
 
 def logOut(request):
     logout(request)
-    return redirect('home')
+    return redirect('logIn')
 
 @login_required(login_url='logIn')
 def main(request):
@@ -92,18 +92,14 @@ def create_candidate(request):
     
 @login_required(login_url='logIn')
 def vote(request):
-    ombudsmans = Candidates.objects.filter(position='Personería')
-    comptrollers = Candidates.objects.filter(position='Contraloría')
     form = VoteForm(request.POST)
     try:
         candidate = Candidates.objects.get(id=request.POST.get('candidate'))
     except Candidates.DoesNotExist:
         candidate = None
     if not form.is_valid():
-        return render(request,'Users/main.html',{
-            'ombudsmans' : ombudsmans,
-            'comptrollers' : comptrollers,
-        })
+        messages.error(request, 'Hubo un error al votar.')
+        return redirect('main')
     # Buscar si el usuario ya votó por un candidato
     votes_file = os.path.join(os.path.dirname(__file__), 'votes.json')
     try:
@@ -115,11 +111,8 @@ def vote(request):
     for vote in votes:
         if vote['user'] == request.user.username:
             if vote['candidate'] == candidate.position:
-                return render(request,'Users/main.html',{
-                     'ombudsmans' : ombudsmans,
-                    'comptrollers' : comptrollers,
-                    'error' : f'Ya ha votado por {candidate.position}'
-                })
+                messages.warning(request, f'Ya ha votado por {candidate.position}.')
+                return redirect('main')
     # Guardar información del voto en un archivo JSON
     vote_data = {
         'user': request.user.username,
@@ -136,7 +129,7 @@ def vote(request):
     with open(votes_file, 'w', encoding='utf-8') as f:
         json.dump(votes, f, ensure_ascii=False, indent=2)
     form.save(request.user)
-    return redirect('main')
+    return redirect('logOut')
 
 @login_required(login_url='logIn')
 def results(request):

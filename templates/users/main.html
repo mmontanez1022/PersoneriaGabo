@@ -16,16 +16,33 @@
                 <span class="fw-bold fs-5 text-dark">I.E. GABO</span>
             </div>
             <div>
+                <a href="{% url 'create_candidate' %}" class="btn btn-outline-primary btn-sm">Crear candidato</a>
+            </div>
+            <div>
+                <a href="{% url 'signUp' %}" class="btn btn-outline-primary btn-sm">Crear usuario</a>
+            </div>
+            <div>
                 <a href="{% url 'logOut' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
             </div>
         </div>
     </nav>
 
     <main class="container py-4">
-        <h1 class="text-center fw-bold mb-4">Candidatos a Personería</h1>
+        {% if messages %}
+          <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert" id="floating-alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <h2 class="text-center fw-bold mb-4">Candidatos a Personería</h2>
 
         <div class="row justify-content-center">
             {% for candidate in candidates %}
+            {% if candidate.position == "Personería" %}
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm border-0">
                     <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;">
@@ -40,6 +57,33 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No hay candidatos registrados aún.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="text-center fw-bold mb-4">Candidatos a Contraloría</h2>
+        <div class="row justify-content-center">
+            {% for candidate in candidates %}
+            {% if candidate.position == "Contraloría" %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5>
+                        <p class="card-text text-muted">{{ candidate.description }}</p>
+                        <form action="{% url 'vote' %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
+                            <button type="submit" class="btn btn-warning w-100">Votar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             {% empty %}
             <div class="col-12 text-center">
                 <p class="text-muted">No hay candidatos registrados aún.</p>
@@ -51,7 +95,16 @@
     <footer class="text-center text-muted py-3">
         &copy; {{ year }} Institución Educativa GABO
     </footer>
-
+    <script>
+      // Espera 5 segundos y desaparece la alerta
+      setTimeout(function () {
+        const alert = document.getElementById("floating-alert");
+        if (alert) {
+          alert.classList.remove("show");
+          alert.classList.add("fade");
+        }
+      }, 5000);
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
