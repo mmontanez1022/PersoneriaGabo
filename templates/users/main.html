@@ -4,25 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidatos - Personería GABO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'users/stylesMain.css' %}">
+    <link rel="icon" href="{% static 'img/logo64.webp' %}" type="image/webp">
+    <title>Candidatos - Personería GABO</title>
 </head>
-<body class="bg-light">
-
-    <nav class="navbar navbar-light bg-white shadow-sm mb-4">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <img src="{% static 'img/logo.webp' %}" alt="Logo" width="40" class="me-2">
-                <span class="fw-bold fs-5 text-dark">I.E. GABO</span>
+<body style="background-color: #eaf7ff;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+        <div class="container-fluid d-flex justify-content-between w-100">
+            <div class="d-flex align-items-center gap-2">
+                <img src="{% static 'img/logo.webp' %}" alt="Logo" style="height: 40px;">
+                <a href="{% url 'main' %}" style="text-decoration: none;"><strong class="text-dark fs-5">I.E. GABO</strong></a>
             </div>
-            <div>
-                <a href="{% url 'create_candidate' %}" class="btn btn-outline-primary btn-sm">Crear candidato</a>
-            </div>
-            <div>
-                <a href="{% url 'signUp' %}" class="btn btn-outline-primary btn-sm">Crear usuario</a>
-            </div>
-            <div>
-                <a href="{% url 'logOut' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+            <div class="d-flex gap-3">
+                {% if user.is_superuser %}
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'results' %}">Resultados</a>
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'create_candidate' %}">Crear candidato</a>
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'signUp' %}">Crear usuario</a>
+                {% endif %}
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'logOut' %}">Cerrar sesión</a>
             </div>
         </div>
     </nav>
@@ -52,7 +52,11 @@
                         <form action="{% url 'vote' %}" method="post">
                             {% csrf_token %}
                             <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
+                            {% if user.is_superuser %}
+                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button>
+                            {% else %}
                             <button type="submit" class="btn btn-warning w-100">Votar</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -78,7 +82,11 @@
                         <form action="{% url 'vote' %}" method="post">
                             {% csrf_token %}
                             <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
+                            {% if user.is_superuser %}
+                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button>
+                            {% else %}
                             <button type="submit" class="btn btn-warning w-100">Votar</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

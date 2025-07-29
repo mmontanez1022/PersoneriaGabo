@@ -15,6 +15,7 @@ from django.contrib import messages
 def signUp(request):
     if not request.user.is_superuser:
         logout(request)
+        messages.error(request, 'No tienes permiso para crear usuarios.')
         return redirect('main')
     if request.method == 'GET':
         return render(request,'users/signUp.html',{
@@ -70,6 +71,7 @@ def main(request):
 def create_candidate(request):
     if not request.user.is_superuser:
         logout(request)
+        messages.error(request, 'No tienes permiso para crear candidatos.')
         return redirect('main')
     users = User.objects.filter(is_active=True)
     candidates = Candidates.objects.all()
@@ -92,6 +94,12 @@ def create_candidate(request):
     
 @login_required(login_url='logIn')
 def vote(request):
+    if request.method != 'POST':
+        return redirect('main')
+    if request.user.is_superuser:
+        logout(request)
+        messages.error(request, 'No tienes permiso para votar.')
+        return redirect('main')
     form = VoteForm(request.POST)
     try:
         candidate = Candidates.objects.get(id=request.POST.get('candidate'))
@@ -129,12 +137,29 @@ def vote(request):
     with open(votes_file, 'w', encoding='utf-8') as f:
         json.dump(votes, f, ensure_ascii=False, indent=2)
     form.save(request.user)
-    return redirect('logOut')
+    return redirect('main')
 
 @login_required(login_url='logIn')
 def results(request):
+    if not request.user.is_superuser:
+        logout(request)
+        messages.error(request, 'No tienes permiso para ver los resultados.')
+        return redirect('main')
     ombudsmans = Candidates.objects.filter(position='Personería')
     comptrollers = Candidates.objects.filter(position='Contraloría') 
+    
+    votes_ombudsman = sum(candidate.votes for candidate in ombudsmans)
+    votes_comptroller = sum(candidate.votes for candidate in comptrollers)
+    
+    if votes_ombudsman > 0:
+        for candidate in ombudsmans:
+            candidate.percentage = (candidate.votes / votes_ombudsman) * 100 if votes_ombudsman > 0 else 0
+            candidate.save()
+    if votes_comptroller > 0:
+        for candidate in comptrollers:
+            candidate.percentage = (candidate.votes / votes_comptroller) * 100 if votes_comptroller > 0 else 0
+            candidate.save()
+        
     return render(request,'Users/results.html',{
             'ombudsmans' : ombudsmans,
             'comptrollers' : comptrollers,

@@ -1,28 +1,31 @@
-    body {
-      background-color: #f8fafc;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .login-container {
-      max-width: 400px;
-      margin: 6% auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-      padding: 30px;
-    }
-    .logo-img {
-      width: 200px;
-    }
-    .login-title {
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-    .btn-gabo {
-      background-color: #f4bd00;
-      color: #000;
-      font-weight: 600;
-    }
-    .btn-gabo:hover {
-      background-color: #e0ac00;
-      color: #000;
-    }
+body {
+  background-color: #eaf7ff;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+.login-container {
+  max-width: 30%;
+  margin: 4% auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+}
+.logo-img {
+  width: 200px;
+}
+.login-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.btn-gabo {
+  background-color: #f4bd00;
+  color: #000;
+  font-weight: 600;
+}
+.btn-gabo:hover {
+  background-color: #e0ac00;
+  color: #000;
+}

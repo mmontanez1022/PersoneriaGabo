@@ -11,6 +11,13 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
         help_texts = {'' for _ in fields}
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -31,7 +38,7 @@ class CandidateForm(forms.ModelForm):
         choices=[
             ('', 'Seleccione un grado')
         ] + [(f'11-{str(i)}',f'11-{str(i)}') for i in range(1, 6)],
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control'}),
         label='Grado'
     )
     age = forms.IntegerField(
@@ -40,12 +47,12 @@ class CandidateForm(forms.ModelForm):
     )
     position = forms.ChoiceField(
         choices=[('', 'Seleccione el cargo'),('Personería', 'Personería'),('Contraloría', 'Contraloría')],
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control'}),
         label='Posición'
     )
     gender = forms.ChoiceField(
         choices=[('', 'Seleccione el género'), ('Masculino', 'Masculino'), ('Femenino', 'Femenino'), ('Otro', 'Otro')],
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control'}),
         label='Género'
     )
     description = forms.CharField(
