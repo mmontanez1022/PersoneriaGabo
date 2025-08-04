@@ -52,32 +52,36 @@
                     </div>
                 </div>
             </div>
+        {% empty %}
+        <p class="text-center">No hay candidatos registrados para esta categoría.</p>
         {% endfor %}
         </div>
       
           <!-- Contraloría -->
-          <div class="category-section">
-            <h4 class="section-title">Candidatos a Contraloría</h4>
-        
-            {% for candidate in comptrollers %}
-            <div class="candidate-card shadow bg-light">
-              <div class="row align-items-center">
-                <div class="col-md-3 text-center">
-                  <img src="{{ candidate.photo.url }}" alt="Foto de {{ candidate.profile.user.username }}" class="img-fluid rounded" style="max-height: 100px;">
-                </div>
-                <div class="col-md-9">
-                  <p class="candidate-name mb-1">{{ candidate.user.username }} - {{ candidate.grade }}</p>
-                  <p class="mb-1">{{ candidate.votes }} votos - {{ candidate.percentage }}%</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar"style="width: {{ candidate.percentage }}%;" aria-valuenow="{{ candidate.percentage }}" aria-valuemin="0" aria-valuemax="100">
-                      {{ candidate.percentage }}%
-                    </div>
+        <div class="category-section">
+          <h4 class="section-title">Candidatos a Contraloría</h4>
+      
+          {% for candidate in comptrollers %}
+          <div class="candidate-card shadow bg-light">
+            <div class="row align-items-center">
+              <div class="col-md-3 text-center">
+                <img src="{{ candidate.photo.url }}" alt="Foto de {{ candidate.profile.user.username }}" class="img-fluid rounded" style="max-height: 100px;">
+              </div>
+              <div class="col-md-9">
+                <p class="candidate-name mb-1">{{ candidate.user.username }} - {{ candidate.grade }}</p>
+                <p class="mb-1">{{ candidate.votes }} votos - {{ candidate.percentage }}%</p>
+                <div class="progress">
+                  <div class="progress-bar bg-warning" role="progressbar"style="width: {{ candidate.percentage }}%;" aria-valuenow="{{ candidate.percentage }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ candidate.percentage }}%
                   </div>
                 </div>
               </div>
             </div>
-            {% endfor %}
           </div>
+          {% empty %}
+          <p class="text-center">No hay candidatos registrados para esta categoría.</p>
+          {% endfor %}
+        </div>
       
         </div>
   </main>
