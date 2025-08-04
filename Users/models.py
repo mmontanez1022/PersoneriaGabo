@@ -41,6 +41,6 @@ class Candidates(models.Model):
         default='Masculino'                     
     )
     description = models.TextField()
-    photo = models.ImageField(upload_to='candidates_photos/', blank=True, null=True)
+    photo = models.ImageField(upload_to='candidates_photos/', blank=True, null=True,default='candidates_photos/default.jpg')
     votes = models.IntegerField(default=0)
     percentage = models.FloatField(default=0.0)
