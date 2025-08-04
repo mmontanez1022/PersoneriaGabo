@@ -94,6 +94,7 @@ def create_candidate(request):
     
 @login_required(login_url='logIn')
 def vote(request):
+    #Verifica que solo se manden datos por POST
     if request.method != 'POST':
         return redirect('main')
     if request.user.is_superuser:
@@ -113,6 +114,7 @@ def vote(request):
     try:
         with open(votes_file, 'r', encoding='utf-8') as f:
             votes = json.load(f)
+            print(votes)
     except (FileNotFoundError, json.JSONDecodeError):
         votes = []
     # Verificar si el usuario ya ha votado
@@ -128,15 +130,11 @@ def vote(request):
         'timestamp': timezone.now().isoformat(),
     }
     
-    try:
-        with open(votes_file, 'r', encoding='utf-8') as f:
-            votes = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        votes = []
     votes.append(vote_data)
     with open(votes_file, 'w', encoding='utf-8') as f:
         json.dump(votes, f, ensure_ascii=False, indent=2)
     form.save(request.user)
+    messages.success(request, 'Voto registrado exitosamente.')
     return redirect('main')
 
 @login_required(login_url='logIn')
