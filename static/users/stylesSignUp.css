@@ -1,48 +1,54 @@
 body {
-  background-color: #eaf7ff;
+  background-color: #eaf7ff; /* Fondo azul claro en toda la página */
 }
-.main-container {
-  max-width: 1100px;
-  margin: 3rem auto;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-}
-.form-section {
-  flex: 1;
-  padding: 2.5rem;
-}
-.form-section h2 {
-  font-weight: 700;
-  margin-bottom: 2rem;
-}
-.image-section {
-  flex: 1;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-.image-section img {
-  max-width: 100%;
-  max-height: 500px;
-  object-fit: contain;
 
+.main-container {
+  max-width: 1100px; /* Ancho máximo del contenedor */
+  margin: 3rem auto; /* Centrado horizontal con espacio vertical */
+  background-color: white; /* Fondo blanco */
+  border-radius: 20px; /* Bordes redondeados grandes */
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.05); /* Sombra suave */
+  overflow: hidden; /* Oculta lo que sobresalga del contenedor */
+  display: flex; /* Activa Flexbox */
+  flex-direction: row; /* Distribuye contenido en filas (dos columnas) */
 }
+
+.form-section {
+  flex: 1; /* Ocupa la mitad del espacio disponible */
+  padding: 2.5rem; /* Espaciado interno */
+}
+
+.form-section h2 {
+  font-weight: 700; /* Título en negrita */
+  margin-bottom: 2rem; /* Separación inferior */
+}
+
+.image-section {
+  flex: 1; /* Ocupa la otra mitad del espacio */
+  background-color: #ffffff; /* Fondo blanco */
+  display: flex; /* Flexbox para centrar la imagen */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  padding: 1rem; /* Espaciado interno */
+}
+
+.image-section img {
+  max-width: 100%; /* No supera el ancho del contenedor */
+  max-height: 500px; /* Altura máxima */
+  object-fit: contain; /* Ajusta la imagen sin deformarla */
+}
+
 .btn-primary {
-  background-color: #0d6efd;
-  border: none;
+  background-color: #0d6efd; /* Azul principal para el botón */
+  border: none; /* Sin borde */
 }
+
 .btn-primary:hover {
-  background-color: #0b5ed7;
+  background-color: #0b5ed7; /* Azul más oscuro al pasar el mouse */
 }
 
 .errorlist {
-  color: red;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  color: red; /* Mensajes de error en rojo */
+  margin-top: 1rem; /* Separación superior */
+  font-size: 0.9rem; /* Tamaño de texto pequeño */
 }

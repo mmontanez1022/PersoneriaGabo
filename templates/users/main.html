@@ -1,118 +1,124 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'users/stylesMain.css' %}">
-    <link rel="icon" href="{% static 'img/logo64.webp' %}" type="image/webp">
-    <title>Candidatos - Personería GABO</title>
-</head>
-<body style="background-color: #eaf7ff;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
-        <div class="container-fluid d-flex justify-content-between w-100">
-            <div class="d-flex align-items-center gap-2">
-                <img src="{% static 'img/logo.webp' %}" alt="Logo" style="height: 40px;">
-                <a href="{% url 'main' %}" style="text-decoration: none;"><strong class="text-dark fs-5">I.E. GABO</strong></a>
-            </div>
-            <div class="d-flex gap-3">
-                {% if user.is_superuser %}
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'results' %}">Resultados</a>
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'create_candidate' %}">Crear candidato</a>
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'signUp' %}">Crear usuario</a>
-                {% endif %}
-                <a class="btn btn-outline-danger btn-sm" href="{% url 'logOut' %}">Cerrar sesión</a>
-            </div>
-        </div>
-    </nav>
+{% load static %} <!-- Carga las etiquetas de archivos estáticos de Django (permite usar {% static %}) -->
+<!DOCTYPE html> <!-- Declara el documento como HTML5 -->
+<html lang="es"> <!-- Establece el idioma del documento en español -->
+<head> <!-- Inicio de la sección de metadatos y recursos -->
+    <meta charset="UTF-8"> <!-- Define la codificación de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Hace la página responsive en móviles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Importa Bootstrap 5 desde CDN para estilos -->
+    <link rel="stylesheet" href="{% static 'users/stylesMain.css' %}"> <!-- Enlaza la hoja de estilos personalizada desde static -->
+    <link rel="icon" href="{% static 'img/logo64.webp' %}" type="image/webp"> <!-- Define el favicon de la página -->
+    <title>Candidatos - Personería GABO</title> <!-- Título que aparece en la pestaña del navegador -->
+</head> <!-- Fin del head -->
+<body style="background-color: #eaf7ff;"> <!-- Inicio del body y establece un color de fondo -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4"> <!-- Barra de navegación principal con clases de Bootstrap -->
+        <div class="container-fluid d-flex justify-content-between w-100"> <!-- Contenedor fluido que distribuye el contenido en extremos -->
+            <div class="d-flex align-items-center gap-2"> <!-- Grupo para logo y nombre alineados verticalmente -->
+                <img src="{% static 'img/logo.webp' %}" alt="Logo" style="height: 40px;"> <!-- Muestra el logo desde static con altura fija -->
+                <a href="{% url 'main' %}" style="text-decoration: none;"><strong class="text-dark fs-5">I.E. GABO</strong></a> <!-- Enlace al inicio con el nombre de la institución -->
+            </div> <!-- Cierre del bloque de logo/nombre -->
+            <div class="d-flex gap-3"> <!-- Grupo de botones a la derecha de la navbar -->
+                {% if user.is_superuser %} <!-- Condición: si el usuario es superusuario muestra botones administrativos -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'results' %}">Resultados</a> <!-- Enlace a la vista de resultados -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'create_candidate' %}">Crear candidato</a> <!-- Enlace para crear candidato -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'signUp' %}">Crear usuario</a> <!-- Enlace para crear usuario -->
+                {% endif %} <!-- Fin de la condición superusuario -->
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'logOut' %}">Cerrar sesión</a> <!-- Botón para cerrar sesión -->
+            </div> <!-- Cierre del grupo de botones -->
+        </div> <!-- Cierre del contenedor de la navbar -->
+    </nav> <!-- Fin de la barra de navegación -->
 
-    <main class="container py-4">
-        {% if messages %}
-          <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert" id="floating-alert">
-                {{ message }}
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
+    <main class="container py-4"> <!-- Contenedor principal con padding vertical -->
+        {% if messages %} <!-- Si existen mensajes (framework de mensajes de Django) -->
+          <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1055;"> <!-- Contenedor fijo para mostrar alertas flotantes en el top center -->
+            {% for message in messages %} <!-- Itera sobre cada mensaje disponible -->
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert" id="floating-alert"> <!-- Caja de alerta con estilo según la etiqueta del mensaje -->
+                {{ message }} <!-- Muestra el texto del mensaje -->
+              </div> <!-- Cierre de la alerta -->
+            {% endfor %} <!-- Fin del bucle de mensajes -->
+          </div> <!-- Cierre del contenedor de alertas -->
+        {% endif %} <!-- Fin de la comprobación de mensajes -->
 
-        <h2 class="text-center fw-bold mb-4">Candidatos a Personería</h2>
+        <h2 class="text-center fw-bold mb-4">Candidatos a Personería</h2> <!-- Título centrado de la sección Personería -->
 
-        <div class="row justify-content-center">
-            {% for candidate in candidates %}
-            {% if candidate.position == "Personería" %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5>
-                        <p class="card-text text-muted">{{ candidate.description }}</p>
-                        <form action="{% url 'vote' %}" method="post">
-                            {% csrf_token %}
-                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
-                            {% if user.is_superuser %}
-                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button>
-                            {% else %}
-                            <button type="submit" class="btn btn-warning w-100">Votar</button>
-                            {% endif %}
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-muted">No hay candidatos registrados aún.</p>
-            </div>
-            {% endfor %}
-        </div>
+        <div class="row justify-content-center"> <!-- Fila de Bootstrap que centrará las tarjetas de candidatos -->
+            {% for candidate in candidates %} <!-- Itera sobre la lista completa de candidatos pasada desde la vista -->
+            {% if candidate.position == "Personería" %} <!-- Filtra y muestra solo los candidatos cuya posición sea "Personería" -->
+            <div class="col-md-6 col-lg-4 mb-4"> <!-- Columna responsiva: ocupa 6/12 en md y 4/12 en lg, con margen inferior -->
+                <div class="card shadow-sm border-0"> <!-- Tarjeta con sombra y sin borde -->
+                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;"> <!-- Imagen del candidato con recorte para cubrir el área -->
+                    <div class="card-body text-center"> <!-- Cuerpo de la tarjeta con texto centrado -->
+                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5> <!-- Nombre de usuario asociado al candidato -->
+                        <p class="card-text text-muted">{{ candidate.description }}</p> <!-- Descripción breve del candidato -->
+                        <form action="{% url 'vote' %}" method="post"> <!-- Formulario que envía el voto a la vista 'vote' mediante POST -->
+                            {% csrf_token %} <!-- Token CSRF para seguridad contra cross-site requests -->
+                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden> <!-- Campo oculto con el id del candidato -->
+                            {% if user.is_superuser %} <!-- Si el usuario es superusuario -->
+                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button> <!-- Botón deshabilitado para evitar que admin vote -->
+                            {% else %} <!-- Si no es superusuario -->
+                            <button type="submit" class="btn btn-warning w-100">Votar</button> <!-- Botón activo para votar -->
+                            {% endif %} <!-- Fin de la condición sobre superusuario -->
+                        </form> <!-- Fin del formulario -->
+                    </div> <!-- Fin del body de la tarjeta -->
+                </div> <!-- Fin de la tarjeta -->
+            </div> <!-- Fin de la columna del candidato -->
+            {% endif %} <!-- Fin del filtro por posición "Personería" -->
+            {% empty %} <!-- Si no hay candidatos en la lista (caso empty del for) -->
+            <div class="col-12 text-center"> <!-- Columna única centrada -->
+                <p class="text-muted">No hay candidatos registrados aún.</p> <!-- Mensaje informativo si no existen candidatos -->
+            </div> <!-- Cierre de la columna vacía -->
+            {% endfor %} <!-- Fin del bucle principal de candidatos -->
+        </div> <!-- Fin de la fila de Personería -->
 
-        <h2 class="text-center fw-bold mb-4">Candidatos a Contraloría</h2>
-        <div class="row justify-content-center">
-            {% for candidate in candidates %}
-            {% if candidate.position == "Contraloría" %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5>
-                        <p class="card-text text-muted">{{ candidate.description }}</p>
-                        <form action="{% url 'vote' %}" method="post">
-                            {% csrf_token %}
-                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden>
-                            {% if user.is_superuser %}
-                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button>
-                            {% else %}
-                            <button type="submit" class="btn btn-warning w-100">Votar</button>
-                            {% endif %}
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-muted">No hay candidatos registrados aún.</p>
-            </div>
-            {% endfor %}
-        </div>
-    </main>
+        <h2 class="text-center fw-bold mb-4">Candidatos a Contraloría</h2> <!-- Título centrado de la sección Contraloría -->
+        <div class="row justify-content-center"> <!-- Nueva fila para las tarjetas de Contraloría -->
+            {% for candidate in candidates %} <!-- Itera nuevamente sobre la lista completa de candidatos -->
+            {% if candidate.position == "Contraloría" %} <!-- Filtra por los que tienen posición "Contraloría" -->
+            <div class="col-md-6 col-lg-4 mb-4"> <!-- Columna responsiva para cada candidato -->
+                <div class="card shadow-sm border-0"> <!-- Tarjeta del candidato -->
+                    <img src="{{ candidate.photo.url }}" class="card-img-top" alt="Foto de {{ candidate.profile.user.username }}" height="200" style="object-fit: cover;"> <!-- Imagen recortada del candidato -->
+                    <div class="card-body text-center"> <!-- Cuerpo de la tarjeta centrado -->
+                        <h5 class="card-title fw-bold">{{ candidate.profile.user.username }}</h5> <!-- Nombre del candidato -->
+                        <p class="card-text text-muted">{{ candidate.description }}</p> <!-- Descripción del candidato -->
+                        <form action="{% url 'vote' %}" method="post"> <!-- Formulario para votación -->
+                            {% csrf_token %} <!-- Token CSRF -->
+                            <input type="number" name="candidate" id="id_candidate" value="{{ candidate.id }}" hidden> <!-- ID del candidato oculto -->
+                            {% if user.is_superuser %} <!-- Si es superusuario -->
+                            <button type="submit" class="btn btn-warning w-100" disabled>Votar</button> <!-- Botón deshabilitado -->
+                            {% else %} <!-- Si no es superusuario -->
+                            <button type="submit" class="btn btn-warning w-100">Votar</button> <!-- Botón activo -->
+                            {% endif %} <!-- Fin de la condición -->
+                        </form> <!-- Fin del formulario -->
+                    </div> <!-- Fin del body de la tarjeta -->
+                </div> <!-- Fin de la tarjeta -->
+            </div> <!-- Fin de la columna -->
+            {% endif %} <!-- Fin del filtro por posición "Contraloría" -->
+            {% empty %} <!-- Si no hay candidatos en esta iteración -->
+            <div class="col-12 text-center"> <!-- Columna para mensaje vacío -->
+                <p class="text-muted">No hay candidatos registrados aún.</p> <!-- Mensaje si no existen candidatos -->
+            </div> <!-- Cierre de la columna vacía -->
+            {% endfor %} <!-- Fin del bucle de candidatos para Contraloría -->
+        </div> <!-- Fin de la fila de Contraloría -->
+    </main> <!-- Fin del contenido principal -->
 
-    <footer class="text-center text-muted py-3">
-        &copy; {{ year }} Institución Educativa GABO
-    </footer>
+    <footer class="text-center text-muted py-3"> <!-- Pie de página centrado con texto atenuado -->
+        &copy; {{ year }} Institución Educativa GABO <!-- Muestra el año (variable pasada desde la vista) y el nombre de la institución -->
+    </footer> <!-- Fin del footer -->
     <script>
       // Espera 5 segundos y desaparece la alerta
-      setTimeout(function () {
-        const alert = document.getElementById("floating-alert");
+      //   Programa una función que se ejecuta tras 5000ms
+      setTimeout(function () { 
+        // Selecciona el elemento de alerta por id
+        const alert = document.getElementById("floating-alert"); 
+        // Si la alerta existe
         if (alert) {
-          alert.classList.remove("show");
+          // Remueve la clase 'show' para iniciar el efecto de ocultar
+          alert.classList.remove("show"); 
+          // Añade la clase 'fade' para animar el desvanecimiento
           alert.classList.add("fade");
         }
+        // Tiempo en milisegundos antes de ejecutar la función (5 segundos)
       }, 5000);
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </script> <!-- Fin del script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> <!-- Importa el bundle JS de Bootstrap para componentes interactivos -->
+</body> <!-- Fin del body -->
+</html> <!-- Fin del documento HTML -->

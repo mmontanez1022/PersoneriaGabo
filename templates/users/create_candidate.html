@@ -1,44 +1,54 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'users/createCandidatesStyles.css' %}">
-  <link rel="icon" href="{% static 'img/logo64.webp' %}" type="image/webp">
-  <title>Crear Candidato</title>
+{% load static %} <!-- Carga el tag para usar archivos estáticos en Django -->
+<!DOCTYPE html> <!-- Define el documento como HTML5 -->
+<html lang="es"> <!-- Idioma del documento en español -->
+<head> <!-- Inicio de la cabecera -->
+  <meta charset="UTF-8"> <!-- Codificación de caracteres -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Escala responsive para móviles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap CSS desde CDN -->
+  <link rel="stylesheet" href="{% static 'users/createCandidatesStyles.css' %}"> <!-- Hoja de estilos personalizada -->
+  <link rel="icon" href="{% static 'img/logo64.webp' %}" type="image/webp"> <!-- Icono de la pestaña -->
+  <title>Crear Candidato</title> <!-- Título de la página -->
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
-        <div class="container-fluid d-flex justify-content-between w-100">
+<body> <!-- Inicio del cuerpo -->
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4"> <!-- Navbar Bootstrap -->
+        <div class="container-fluid d-flex justify-content-between w-100"> <!-- Contenedor fluido con espacio entre elementos -->
+            
+            <!-- Logo + enlace al inicio -->
             <div class="d-flex align-items-center gap-2">
-                <img src="{% static 'img/logo.webp' %}" alt="Logo" style="height: 40px;">
-                <a href="{% url 'main' %}" style="text-decoration: none;"><strong class="text-dark fs-5">I.E. GABO</strong></a>
+                <img src="{% static 'img/logo.webp' %}" alt="Logo" style="height: 40px;"> <!-- Logo pequeño -->
+                <a href="{% url 'main' %}" style="text-decoration: none;"><strong class="text-dark fs-5">I.E. GABO</strong></a> <!-- Texto del logo con enlace -->
             </div>
+
+            <!-- Botones de navegación -->
             <div class="d-flex gap-3">
-                {% if user.is_superuser %}
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'results' %}">Resultados</a>
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'create_candidate' %}">Crear candidato</a>
-                <a class="btn btn-outline-primary btn-sm" href="{% url 'signUp' %}">Crear usuario</a>
+                {% if user.is_superuser %} <!-- Opciones solo visibles para superusuarios -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'results' %}">Resultados</a> <!-- Enlace a resultados -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'create_candidate' %}">Crear candidato</a> <!-- Enlace a crear candidato -->
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'signUp' %}">Crear usuario</a> <!-- Enlace a registrar usuario -->
                 {% endif %}
-                <a class="btn btn-outline-danger btn-sm" href="{% url 'logOut' %}">Cerrar sesión</a>
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'logOut' %}">Cerrar sesión</a> <!-- Botón para cerrar sesión -->
             </div>
         </div>
     </nav>
+
+<!-- Contenedor del formulario -->
 <div class="form-wrapper">
-  <!-- Logo o imagen institucional -->
+
+  <!-- Lado del logo -->
   <div class="logo-side">
-    <img src="{% static 'img/mariposas.png' %}" alt="Logo GABO">
+    <img src="{% static 'img/mariposas.png' %}" alt="Logo GABO"> <!-- Imagen institucional -->
   </div>
 
-  <!-- Formulario de candidato -->
+  <!-- Lado del formulario -->
   <div class="form-side">
-    <h4 class="form-title">Crear un candidato</h4>
+    <h4 class="form-title">Crear un candidato</h4> <!-- Título del formulario -->
 
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
+    <form method="POST" enctype="multipart/form-data"> <!-- Formulario con soporte para subida de archivos -->
+      {% csrf_token %} <!-- Token CSRF obligatorio en formularios Django -->
 
+      <!-- Campos del formulario Django -->
       <div class="mb-3">
         {{ form.user.label_tag }} {{ form.user }}
       </div>
@@ -64,12 +74,13 @@
         {{ form.photo.label_tag }} {{ form.photo }}
       </div>
 
+      <!-- Botón para enviar el formulario -->
       <button type="submit" class="btn btn-submit bg-warning w-100">Crear candidato</button>
     </form>
   </div>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Script de Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

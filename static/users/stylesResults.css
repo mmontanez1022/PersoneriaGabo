@@ -1,37 +1,44 @@
 body {
-  background-color: #eaf7ff;
+  background-color: #eaf7ff; /* Fondo azul claro para toda la página */
 }
+
 .results-container {
-  max-width: 1000px;
-  margin: 60px auto;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.08);
-  padding: 2rem;
+  max-width: 1000px;         /* El ancho máximo del contenedor es 1000px */
+  margin: 60px auto;         /* Se centra horizontalmente y agrega 60px arriba/abajo */
+  background-color: #fff;    /* Fondo blanco dentro del contenedor */
+  border-radius: 12px;       /* Bordes redondeados de 12px */
+  box-shadow: 0 0 25px rgba(0,0,0,0.08); /* Sombra suave alrededor */
+  padding: 2rem;             /* Espaciado interno uniforme */
 }
+
 .section-title {
-  font-weight: bold;
-  font-size: 1.8rem;
-  text-align: center;
-  margin-bottom: 2rem;
+  font-weight: bold;         /* Texto en negrita */
+  font-size: 1.8rem;         /* Tamaño de letra grande */
+  text-align: center;        /* Centrado del texto */
+  margin-bottom: 2rem;       /* Espacio inferior */
 }
+
 .candidate-card {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  background-color: #f9f9f9; /* Fondo gris muy claro */
+  border-radius: 10px;       /* Bordes redondeados */
+  padding: 1rem;             /* Espaciado interno */
+  margin-bottom: 1rem;       /* Separación con la siguiente tarjeta */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05); /* Sombra ligera */
 }
+
 .candidate-name {
-  font-weight: 600;
+  font-weight: 600;          /* Texto semi-negrita para destacar nombres */
 }
+
 .progress {
-  height: 20px;
-  border-radius: 10px;
+  height: 20px;              /* Altura de la barra de progreso */
+  border-radius: 10px;       /* Bordes redondeados de la barra */
 }
+
 .progress-bar {
-  font-weight: 600;
+  font-weight: 600;          /* Texto dentro de la barra más grueso */
 }
+
 .category-section {
-  margin-bottom: 3rem;
+  margin-bottom: 3rem;       /* Espacio entre secciones (ej. Personería y Contraloría) */
 }

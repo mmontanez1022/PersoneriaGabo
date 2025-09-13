@@ -1,31 +1,42 @@
+/* Estilo global del body */
 body {
-  background-color: #eaf7ff;
-  font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow-x: hidden;
+  background-color: #eaf7ff;          /* Fondo azul muy claro */
+  font-family: 'Segoe UI', sans-serif;/* Fuente moderna y legible */
+  height: 100vh;                      /* Ocupa toda la altura de la ventana */
+  width: 100vw;                       /* Ocupa todo el ancho de la ventana */
+  overflow-x: hidden;                 /* Evita el scroll horizontal */
 }
+
+/* Contenedor del formulario de login */
 .login-container {
-  max-width: 30%;
-  margin: 4% auto;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-  padding: 30px;
+  max-width: 30%;                     /* Ancho máximo del 30% de la pantalla */
+  margin: 4% auto;                    /* Margen superior del 4% y centrado horizontal */
+  background: white;                  /* Fondo blanco */
+  border-radius: 15px;                /* Bordes redondeados */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* Sombra suave */
+  padding: 30px;                      /* Espaciado interno */
 }
+
+/* Logo dentro del login */
 .logo-img {
-  width: 200px;
+  width: 200px;                       /* Tamaño fijo de 200px */
 }
+
+/* Título de la tarjeta de login */
 .login-title {
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-weight: bold;                  /* Texto en negrita */
+  font-size: 1.5rem;                  /* Tamaño de fuente más grande */
 }
+
+/* Botón personalizado (amarillo institucional) */
 .btn-gabo {
-  background-color: #f4bd00;
-  color: #000;
-  font-weight: 600;
+  background-color: #f4bd00;          /* Amarillo principal */
+  color: #000;                        /* Texto negro */
+  font-weight: 600;                   /* Texto semi-negrita */
 }
+
+/* Efecto hover para el botón */
 .btn-gabo:hover {
-  background-color: #e0ac00;
-  color: #000;
+  background-color: #e0ac00;          /* Amarillo un poco más oscuro */
+  color: #000;                        /* Se mantiene negro el texto */
 }

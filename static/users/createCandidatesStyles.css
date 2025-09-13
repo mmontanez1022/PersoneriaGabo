@@ -1,61 +1,77 @@
+/* Aplica a todo el cuerpo del documento */
 body {
-  background-color: #eaf7ff;
-  height: 100vh;
-  width: 100vw;
+  background-color: #eaf7ff; /* Fondo azul muy claro */
+  height: 100vh;            /* Ocupa toda la altura de la ventana */
+  width: 100vw;             /* Ocupa todo el ancho de la ventana */
 }
+
+/* Contenedor principal del formulario */
 .form-wrapper {
-  display: flex;
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  overflow: hidden;
-  width: 90%;
-  max-width: 1100px;
-  margin: 2rem auto;
-  height: 83%; 
+  display: flex;                                  /* Flexbox para dividir en dos lados */
+  background-color: white;                        /* Fondo blanco */
+  border-radius: 15px;                            /* Bordes redondeados */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);        /* Sombra suave */
+  overflow: hidden;                               /* Oculta contenido que se desborde */
+  width: 90%;                                     /* Ocupa el 90% del ancho disponible */
+  max-width: 1100px;                              /* Máximo ancho */
+  margin: 2rem auto;                              /* Centrado horizontal con margen vertical */
+  height: 83%;                                    /* Altura relativa de la pantalla */
 }
 
-
+/* Lado del logo */
 .form-wrapper .logo-side {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f7faff;
-  padding: 1rem;
-}
-.form-wrapper .logo-side img {
-  max-height: 90%;
-  max-width: 90%;
-  object-fit: contain;
-}
-.form-wrapper .form-side {
-  flex: 1;
-  overflow-y: auto;      /* Permite scroll en Y */
-  padding: 2rem;
-  background-color: white;
-  height: 100%;
+  flex: 1;                                        /* Ocupa la mitad */
+  display: flex;                                  /* Flexbox para centrar contenido */
+  align-items: center;                            /* Centra verticalmente */
+  justify-content: center;                        /* Centra horizontalmente */
+  background-color: #f7faff;                      /* Fondo gris azulado muy claro */
+  padding: 1rem;                                  /* Espaciado interno */
 }
 
+/* Imagen del lado del logo */
+.form-wrapper .logo-side img {
+  max-height: 90%;                                /* No pasa del 90% de la altura */
+  max-width: 90%;                                 /* No pasa del 90% del ancho */
+  object-fit: contain;                            /* Ajusta sin deformarse */
+}
+
+/* Lado del formulario */
+.form-wrapper .form-side {
+  flex: 1;                                        /* Ocupa la otra mitad */
+  overflow-y: auto;                               /* Scroll solo en Y si se desborda */
+  padding: 2rem;                                  /* Espaciado interno */
+  background-color: white;                        /* Fondo blanco */
+  height: 100%;                                   /* Ocupa todo el alto disponible */
+}
+
+/* Estilo de la barra de scroll en navegadores WebKit (Chrome, Edge, Safari) */
 .form-side::-webkit-scrollbar {
-  width: 6px;
+  width: 6px;                                     /* Grosor del scroll */
 }
 .form-side::-webkit-scrollbar-thumb {
-  background-color: #cccccc;
-  border-radius: 3px;
+  background-color: #cccccc;                      /* Color gris para el thumb */
+  border-radius: 3px;                             /* Bordes redondeados */
 }
+
+/* Título del formulario */
 .form-title {
-  font-weight: bold;
-  margin-bottom: 1.2rem;
+  font-weight: bold;                              /* Texto en negrita */
+  margin-bottom: 1.2rem;                          /* Espacio inferior */
 }
+
+/* Inputs del formulario */
 .form-control {
-  border-radius: 8px;
+  border-radius: 8px;                             /* Bordes suavizados */
 }
+
+/* Botón de enviar */
 .btn-submit {
-  background-color: #0d9488;
-  color: #fff;
-  font-weight: bold;
+  background-color: #0d9488;                      /* Verde azulado */
+  color: #fff;                                    /* Texto blanco */
+  font-weight: bold;                              /* Texto en negrita */
 }
+
+/* Efecto hover en el botón */
 .btn-submit:hover {
-  background-color: #0f766e;
+  background-color: #0f766e;                      /* Verde más oscuro */
 }
